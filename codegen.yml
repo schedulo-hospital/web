@@ -1,0 +1,14 @@
+overwrite: true
+generates:
+  src/gql/generatedTypes.tsx:
+    schema: "http://localhost:8080/graphql"
+    documents: 
+      - "src/gql/fragments/*.{ts,tsx,graphql}"
+      - "src/gql/queries/*.{ts,tsx,graphql}"
+      - "src/gql/mutations/*.{ts,tsx,graphql}"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-urql"
+      - add:
+          content: //@ts-nocheck

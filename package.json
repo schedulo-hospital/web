@@ -4,16 +4,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "apollo": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@graphql-codegen/add": "^3.2.1",
+    "@graphql-codegen/typescript": "^2.7.3",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@urql/exchange-auth": "^1.0.0",
+    "graphql": "^16.6.0",
     "next": "12.2.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "urql": "^3.0.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.12.0",
+    "@graphql-codegen/typescript-urql": "^3.6.4",
     "@types/node": "18.7.14",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
