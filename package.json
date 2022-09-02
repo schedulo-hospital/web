@@ -10,9 +10,6 @@
     "apollo": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@graphql-codegen/add": "^3.2.1",
-    "@graphql-codegen/typescript": "^2.7.3",
-    "@graphql-codegen/typescript-operations": "^2.5.3",
     "@urql/exchange-auth": "^1.0.0",
     "graphql": "^16.6.0",
     "next": "12.2.5",
@@ -21,6 +18,9 @@
     "urql": "^3.0.1"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^3.2.1",
+    "@graphql-codegen/typescript": "^2.7.3",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/cli": "^2.12.0",
     "@graphql-codegen/typescript-urql": "^3.6.4",
     "@types/node": "18.7.14",
