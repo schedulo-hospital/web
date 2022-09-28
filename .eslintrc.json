@@ -1,5 +1,6 @@
 {
   "extends": "next/core-web-vitals",
+  "ignorePatterns": ["src/gql/generatedTypes.tsx"],
   "rules": {
     "semi": ["error", "never"]
   }
