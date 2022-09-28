@@ -6,7 +6,7 @@ import { TOKEN_KEY } from "../gql/client"
 import { useCurrentUserQuery } from "../gql/generatedTypes"
 
 const AdminAppBar = () => {
-  const [{ error }] = useCurrentUserQuery()
+  const [{ data: user, error }] = useCurrentUserQuery()
   const loggedIn = React.useContext(loggedInContext)
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
@@ -41,10 +41,11 @@ const AdminAppBar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu}>
+                <Typography color="primary.contrastText" onClick={handleOpenUserMenu}>{user?.currentUser?.name}</Typography>
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
