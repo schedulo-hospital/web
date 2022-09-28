@@ -30,6 +30,7 @@ const AdminAppBar = () => {
     return <></>
   }
 
+  const username = user?.currentUser?.name.trim()
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -42,7 +43,7 @@ const AdminAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Typography color="primary.contrastText" onClick={handleOpenUserMenu}>{user?.currentUser?.name}</Typography>
+                <Typography color="primary.contrastText" onClick={handleOpenUserMenu}>{username?.length === 0 ? user?.currentUser?.email : username }</Typography>
               </IconButton>
             </Tooltip>
 

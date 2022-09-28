@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build && next export",
     "start": "next start -p $PORT",
+    "dev": "next dev",
     "lint": "next lint",
     "apollo": "graphql-codegen --config codegen.yml"
   },
@@ -12,6 +13,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/roboto": "^4.5.8",
+    "@mui/lab": "^5.0.0-alpha.101",
     "@mui/material": "^5.10.7",
     "@mui/styled-engine-sc": "^5.10.6",
     "@urql/exchange-auth": "^1.0.0",

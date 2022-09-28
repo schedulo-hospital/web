@@ -14,11 +14,7 @@ const Home: NextPage = () => {
   if (fetching) return <div>loading...</div>
 
   return (
-    <div className={styles.container}>
-      
-      <div>{data?.currentUser?.name} {data?.currentUser?.email}</div>
-      
-    </div>
+    <></>
   )
 }
 
