@@ -281,10 +281,23 @@ export enum ErrorType {
   Unknown = 'UNKNOWN'
 }
 
+export type LoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  token: Scalars['String'];
+  user: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createOrganization?: Maybe<Organization>;
   deleteOrganization?: Maybe<Scalars['Boolean']>;
+  login?: Maybe<LoginResponse>;
+  register?: Maybe<LoginResponse>;
   updateOrganization?: Maybe<Organization>;
 };
 
@@ -296,6 +309,16 @@ export type MutationCreateOrganizationArgs = {
 
 export type MutationDeleteOrganizationArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+
+export type MutationRegisterArgs = {
+  input: RegisterInput;
 };
 
 
@@ -366,8 +389,15 @@ export type QueryOrganizationsArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
+export type RegisterInput = {
+  email: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
+  email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
 };
@@ -395,17 +425,41 @@ export type _Service = {
   sdl: Scalars['String'];
 };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, name: string } | null };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, name: string, email: string } | null };
 
 
+export const LoginDocument = gql`
+    mutation login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    user {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
 export const CurrentUserDocument = gql`
     query currentUser {
   currentUser {
     id
     name
+    email
   }
 }
     `;

@@ -41,17 +41,20 @@ const addAuthToOperation = ({ authState, operation }: { authState: any, operatio
 }
 
 const didAuthError = ({ error }: { error: CombinedError }) => {
-  return error.graphQLErrors.some(e => e.extensions?.code === 'FORBIDDEN')
+  return error.graphQLErrors.some(e => e.extensions?.errorType === 'PERMISSION_DENIED')
 }
 
-export const client = createClient({
-  url: 'http://localhost:8080/graphql',
-  exchanges: [
-    authExchange({
-      getAuth,
-      addAuthToOperation,
-      didAuthError,
-    }),
-    fetchExchange,
-  ],
-})
+export const createGQLClient = () => {
+  return createClient({
+    // url: 'https://schedulo-api.herokuapp.com/graphql',
+    url: 'http://localhost:8080/graphql',
+    exchanges: [
+      authExchange({
+        getAuth,
+        addAuthToOperation,
+        didAuthError,
+      }),
+      fetchExchange,
+    ],
+  })
+}
