@@ -1,4 +1,5 @@
 import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material"
+import Link from "next/link"
 import router from "next/router"
 import React from "react"
 import { loggedInContext } from "../../pages/_app"
@@ -37,7 +38,8 @@ const AdminAppBar = () => {
         <Toolbar disableGutters>          
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
 
-            <Button sx={{ my: 2, color: 'white', display: 'block' }}>Menu 1</Button>
+            <Link href="/"><Button sx={{ my: 2, color: 'white', display: 'block' }}>Přehled</Button></Link>
+            <Link href="/organisations"><Button sx={{ my: 2, color: 'white', display: 'block' }}>Organizace</Button></Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -63,6 +65,9 @@ const AdminAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem>
+                <Link href="profile">Profil</Link>
+              </MenuItem>
               <MenuItem>
                 <Typography textAlign="center" onClick={logout}>Odhlásit se</Typography>
               </MenuItem>

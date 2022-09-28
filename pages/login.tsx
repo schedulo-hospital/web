@@ -6,7 +6,7 @@ import React from 'react'
 import { TOKEN_KEY } from '../src/gql/client'
 import { useLoginMutation } from '../src/gql/generatedTypes'
 import { loggedInContext } from './_app'
-import Link from 'next/link';
+import Link from 'next/link'
 
 const Login: NextPage = () => {
   const [email, setEmail] = React.useState('')
