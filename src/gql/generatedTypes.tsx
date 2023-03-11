@@ -14,8 +14,30 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
   _FieldSet: any;
 };
+
+export type Availability = {
+  __typename?: 'Availability';
+  date: Scalars['Date'];
+  id: Scalars['String'];
+  type: AvailabilityType;
+};
+
+export type AvailabilityInput = {
+  date: Scalars['Date'];
+  type: AvailabilityType;
+  /**  only for admins */
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+export enum AvailabilityType {
+  Desired = 'DESIRED',
+  None = 'NONE',
+  Unavailable = 'UNAVAILABLE',
+  Undesired = 'UNDESIRED'
+}
 
 export type Department = {
   __typename?: 'Department';
@@ -294,21 +316,32 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createOrganization?: Maybe<Organization>;
-  deleteOrganization?: Maybe<Scalars['Boolean']>;
+  createDepartment?: Maybe<Department>;
+  createOrganisation?: Maybe<Organisation>;
+  departmentAddUser?: Maybe<Department>;
   login?: Maybe<LoginResponse>;
+  organisationAddUser?: Maybe<Organisation>;
   register?: Maybe<LoginResponse>;
-  updateOrganization?: Maybe<Organization>;
+  setAvailability?: Maybe<Availability>;
+  startSolving?: Maybe<Scalars['Boolean']>;
+  stopSolving?: Maybe<Scalars['Boolean']>;
 };
 
 
-export type MutationCreateOrganizationArgs = {
-  input: OrganizationInput;
+export type MutationCreateDepartmentArgs = {
+  name: Scalars['String'];
+  organisationId: Scalars['String'];
 };
 
 
-export type MutationDeleteOrganizationArgs = {
-  id: Scalars['String'];
+export type MutationCreateOrganisationArgs = {
+  input: OrganisationInput;
+};
+
+
+export type MutationDepartmentAddUserArgs = {
+  departmentId: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -317,42 +350,57 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationOrganisationAddUserArgs = {
+  email: Scalars['String'];
+  organisationId: Scalars['String'];
+};
+
+
 export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
 
-export type MutationUpdateOrganizationArgs = {
-  id: Scalars['String'];
-  name: Scalars['String'];
+export type MutationSetAvailabilityArgs = {
+  input: AvailabilityInput;
 };
 
-export type Organization = {
-  __typename?: 'Organization';
+
+export type MutationStartSolvingArgs = {
+  scheduleId: Scalars['String'];
+};
+
+
+export type MutationStopSolvingArgs = {
+  scheduleId: Scalars['String'];
+};
+
+export type Organisation = {
+  __typename?: 'Organisation';
   createdBy: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
 };
 
-/** Organization Connection */
-export type OrganizationConnection = {
-  __typename?: 'OrganizationConnection';
+/** Organisation Connection */
+export type OrganisationConnection = {
+  __typename?: 'OrganisationConnection';
   /** Field edges */
-  edges?: Maybe<Array<Maybe<OrganizationEdge>>>;
+  edges?: Maybe<Array<Maybe<OrganisationEdge>>>;
   /** Field pageInfo */
   pageInfo?: Maybe<PageInfo>;
 };
 
-/** Organization Edge */
-export type OrganizationEdge = {
-  __typename?: 'OrganizationEdge';
+/** Organisation Edge */
+export type OrganisationEdge = {
+  __typename?: 'OrganisationEdge';
   /** Field cursor */
   cursor?: Maybe<Scalars['String']>;
   /** Field node */
-  node?: Maybe<Organization>;
+  node?: Maybe<Organisation>;
 };
 
-export type OrganizationInput = {
+export type OrganisationInput = {
   name: Scalars['String'];
 };
 
@@ -371,22 +419,50 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
-  _service?: Maybe<_Service>;
+  _service: _Service;
+  availabilities: Array<Availability>;
   currentUser?: Maybe<User>;
-  organization?: Maybe<Organization>;
-  organizations?: Maybe<OrganizationConnection>;
+  department?: Maybe<Department>;
+  departments?: Maybe<DepartmentConnection>;
+  organisation?: Maybe<Organisation>;
+  organisations?: Maybe<OrganisationConnection>;
+  schedule?: Maybe<Schedule>;
 };
 
 
-export type QueryOrganizationArgs = {
+export type QueryAvailabilitiesArgs = {
+  from: Scalars['Date'];
+  to: Scalars['Date'];
+};
+
+
+export type QueryDepartmentArgs = {
   id: Scalars['String'];
 };
 
 
-export type QueryOrganizationsArgs = {
+export type QueryDepartmentsArgs = {
   after?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  organisationId: Scalars['String'];
+};
+
+
+export type QueryOrganisationArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryOrganisationsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryScheduleArgs = {
+  id: Scalars['String'];
 };
 
 export type RegisterInput = {
@@ -395,11 +471,17 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
+export type Schedule = {
+  __typename?: 'Schedule';
+  id: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
+  seniority?: Maybe<Scalars['String']>;
 };
 
 /** User Connection */
@@ -425,13 +507,6 @@ export type _Service = {
   sdl: Scalars['String'];
 };
 
-export type LoginMutationVariables = Exact<{
-  input: LoginInput;
-}>;
-
-
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
-
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput;
 }>;
@@ -439,28 +514,34 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
 
+export type SetAvailabilityMutationVariables = Exact<{
+  input: AvailabilityInput;
+}>;
+
+
+export type SetAvailabilityMutation = { __typename?: 'Mutation', setAvailability?: { __typename?: 'Availability', id: string, date: any, type: AvailabilityType } | null };
+
+export type AvailabilitiesQueryVariables = Exact<{
+  from: Scalars['Date'];
+  to: Scalars['Date'];
+}>;
+
+
+export type AvailabilitiesQuery = { __typename?: 'Query', availabilities: Array<{ __typename?: 'Availability', date: any, id: string, type: AvailabilityType }> };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, name: string, email: string } | null };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
 
-export const LoginDocument = gql`
-    mutation login($input: LoginInput!) {
-  login(input: $input) {
-    token
-    user {
-      id
-      name
-      email
-    }
-  }
-}
-    `;
 
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
-};
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
+
+
 export const RegisterDocument = gql`
     mutation register($input: RegisterInput!) {
   register(input: $input) {
@@ -477,6 +558,32 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const SetAvailabilityDocument = gql`
+    mutation setAvailability($input: AvailabilityInput!) {
+  setAvailability(input: $input) {
+    id
+    date
+    type
+  }
+}
+    `;
+
+export function useSetAvailabilityMutation() {
+  return Urql.useMutation<SetAvailabilityMutation, SetAvailabilityMutationVariables>(SetAvailabilityDocument);
+};
+export const AvailabilitiesDocument = gql`
+    query availabilities($from: Date!, $to: Date!) {
+  availabilities(from: $from, to: $to) {
+    date
+    id
+    type
+  }
+}
+    `;
+
+export function useAvailabilitiesQuery(options: Omit<Urql.UseQueryArgs<AvailabilitiesQueryVariables>, 'query'>) {
+  return Urql.useQuery<AvailabilitiesQuery, AvailabilitiesQueryVariables>({ query: AvailabilitiesDocument, ...options });
+};
 export const CurrentUserDocument = gql`
     query currentUser {
   currentUser {
@@ -489,4 +596,20 @@ export const CurrentUserDocument = gql`
 
 export function useCurrentUserQuery(options?: Omit<Urql.UseQueryArgs<CurrentUserQueryVariables>, 'query'>) {
   return Urql.useQuery<CurrentUserQuery, CurrentUserQueryVariables>({ query: CurrentUserDocument, ...options });
+};
+export const LoginDocument = gql`
+    mutation login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    user {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };

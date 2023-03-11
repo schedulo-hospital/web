@@ -1,0 +1,7 @@
+mutation setAvailability ($input: AvailabilityInput!) {
+  setAvailability (input: $input ) {
+    id
+    date
+    type
+  }
+}

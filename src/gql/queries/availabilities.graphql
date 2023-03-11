@@ -1,0 +1,8 @@
+
+query availabilities ($from: Date!, $to: Date!) {
+  availabilities(from: $from, to: $to) {
+    date
+    id
+    type
+  }
+}

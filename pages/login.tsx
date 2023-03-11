@@ -63,6 +63,7 @@ const Login: NextPage = () => {
               label="Email"
               name="email"
               autoComplete="email"
+              type="email"
               autoFocus
               onChange={e => setEmail(e.target.value)}
             />

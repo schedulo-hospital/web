@@ -70,6 +70,7 @@ const Login: NextPage = () => {
               fullWidth
               label="Jméno"
               type="text"
+              autoFocus
               onChange={e => setName(e.target.value)}
             />
             <TextField
@@ -77,7 +78,7 @@ const Login: NextPage = () => {
               fullWidth
               label="Email"
               autoComplete="email"
-              autoFocus
+              type="email"
               onChange={e => setEmail(e.target.value)}
             />
             <TextField

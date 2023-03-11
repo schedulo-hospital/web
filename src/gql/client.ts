@@ -46,8 +46,8 @@ const didAuthError = ({ error }: { error: CombinedError }) => {
 
 export const createGQLClient = () => {
   return createClient({
-    url: 'https://schedulo-api.herokuapp.com/graphql',
-    // url: 'http://localhost:8080/graphql',
+    // url: 'https://schedulo-api.herokuapp.com/graphql',
+    url: 'http://192.168.0.108:8080/graphql',
     exchanges: [
       authExchange({
         getAuth,
