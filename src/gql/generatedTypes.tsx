@@ -507,6 +507,13 @@ export type _Service = {
   sdl: Scalars['String'];
 };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
+
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput;
 }>;
@@ -534,14 +541,23 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, name: string, email: string } | null };
 
-export type LoginMutationVariables = Exact<{
-  input: LoginInput;
-}>;
 
+export const LoginDocument = gql`
+    mutation login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    user {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string } } | null };
-
-
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
 export const RegisterDocument = gql`
     mutation register($input: RegisterInput!) {
   register(input: $input) {
@@ -596,20 +612,4 @@ export const CurrentUserDocument = gql`
 
 export function useCurrentUserQuery(options?: Omit<Urql.UseQueryArgs<CurrentUserQueryVariables>, 'query'>) {
   return Urql.useQuery<CurrentUserQuery, CurrentUserQueryVariables>({ query: CurrentUserDocument, ...options });
-};
-export const LoginDocument = gql`
-    mutation login($input: LoginInput!) {
-  login(input: $input) {
-    token
-    user {
-      id
-      name
-      email
-    }
-  }
-}
-    `;
-
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
