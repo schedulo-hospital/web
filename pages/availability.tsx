@@ -6,9 +6,9 @@ import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import React from "react"
 import { AvailabilityType, useAvailabilitiesQuery, useSetAvailabilityMutation } from '../src/gql/generatedTypes'
-import csLocale from "moment/locale/cs"
+// import csLocale from "moment/locale/cs"
 
-moment.locale('cs', [csLocale])
+moment.locale('cs')
 
 const localizer = momentLocalizer(moment)
 
