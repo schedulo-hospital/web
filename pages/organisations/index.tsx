@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material"
 import { NextPage } from "next"
 import { withAdminLayout } from "../../src/hoc/withAdmin"
-import { useOrganisationsQuery } from '../../src/gql/generatedTypes';
+import { useOrganisationsQuery } from '../../src/gql/generatedTypes'
 
 const Organisations: NextPage = () => {
   const [{data}] = useOrganisationsQuery()

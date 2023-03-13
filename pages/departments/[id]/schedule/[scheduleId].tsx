@@ -5,7 +5,7 @@ import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import React from "react"
-import { useScheduleQuery, useShiftsQuery } from '../../../../src/gql/generatedTypes';
+import { useScheduleQuery, useShiftsQuery } from '../../../../src/gql/generatedTypes'
 import { useRouter } from "next/router"
 // import csLocale from "moment/locale/cs"
 
