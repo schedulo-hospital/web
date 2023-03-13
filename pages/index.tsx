@@ -36,7 +36,7 @@ const getEventColor = (event: Event) => {
 const Availability: NextPage = () => {
   const [loading, setLoading] = React.useState(false)
   const [selectedType, setSelectedType] = React.useState<AvailabilityType>(AvailabilityType.None)
-  const [{ data }, reexecuteQuery] = useAvailabilitiesQuery({ variables: { from: '2023-01-01', to: '2023-03-30' } })
+  const [{ data }, reexecuteQuery] = useAvailabilitiesQuery({ variables: { from: '2023-01-01', to: '2023-12-30' } })
   const [, setAvailability ] = useSetAvailabilityMutation()
 
   const handleSelectSlot = React.useCallback(

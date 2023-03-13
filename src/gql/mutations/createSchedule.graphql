@@ -1,0 +1,13 @@
+mutation createSchedule ($departmentId: String!, $name: String!, $start: Date!, $end: Date!) {
+  createSchedule (
+    departmentId: $departmentId,
+    name: $name,
+    start: $start,
+    end: $end
+  ) {
+    id
+    name
+    start
+    end
+  }
+}

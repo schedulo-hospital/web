@@ -1,0 +1,3 @@
+mutation stopSolving ($scheduleId: String!) {
+  stopSolving(scheduleId: $scheduleId)
+}

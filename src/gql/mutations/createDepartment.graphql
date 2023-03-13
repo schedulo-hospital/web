@@ -1,0 +1,6 @@
+mutation createDepartment($organisationId: String!, $name: String!) {
+  createDepartment(organisationId: $organisationId, name: $name) {
+    id
+    name
+  }
+}

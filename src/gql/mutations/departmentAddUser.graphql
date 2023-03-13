@@ -1,0 +1,6 @@
+mutation departmentAddUser ($departmentId: String!, $name: String!, $email: String!, $seniority: Seniority!) {
+  departmentAddUser (departmentId: $departmentId, name: $name, email: $email, seniority: $seniority) {
+    id
+    name
+  }
+}

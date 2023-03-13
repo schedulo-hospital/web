@@ -1,4 +1,6 @@
+import { LocalizationProvider } from "@mui/x-date-pickers"
 import AdminAppBar from "../components/AdminAppBar"
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 export function withAdminLayout<T>(
   WrappedComponent: React.ComponentType
@@ -9,7 +11,9 @@ export function withAdminLayout<T>(
   const ComponentWithTheme = () => {
     return <>
       <AdminAppBar />
-      <WrappedComponent />
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <WrappedComponent />
+      </LocalizationProvider>
     </>
   }
 

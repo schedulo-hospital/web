@@ -351,6 +351,7 @@ export type MutationCreateScheduleArgs = {
 export type MutationDepartmentAddUserArgs = {
   departmentId: Scalars['String'];
   email: Scalars['String'];
+  name: Scalars['String'];
   seniority: Seniority;
 };
 
@@ -506,6 +507,7 @@ export type Schedule = {
   name: Scalars['String'];
   score?: Maybe<Scalars['String']>;
   start: Scalars['Date'];
+  status?: Maybe<Scalars['String']>;
 };
 
 /** Schedule Connection */
@@ -572,6 +574,41 @@ export type _Service = {
   sdl: Scalars['String'];
 };
 
+export type CreateDepartmentMutationVariables = Exact<{
+  organisationId: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type CreateDepartmentMutation = { __typename?: 'Mutation', createDepartment?: { __typename?: 'Department', id: string, name: string } | null };
+
+export type CreateOrganisationMutationVariables = Exact<{
+  input: OrganisationInput;
+}>;
+
+
+export type CreateOrganisationMutation = { __typename?: 'Mutation', createOrganisation?: { __typename?: 'Organisation', id: string, name: string } | null };
+
+export type CreateScheduleMutationVariables = Exact<{
+  departmentId: Scalars['String'];
+  name: Scalars['String'];
+  start: Scalars['Date'];
+  end: Scalars['Date'];
+}>;
+
+
+export type CreateScheduleMutation = { __typename?: 'Mutation', createSchedule?: { __typename?: 'Schedule', id: string, name: string, start: any, end: any } | null };
+
+export type DepartmentAddUserMutationVariables = Exact<{
+  departmentId: Scalars['String'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  seniority: Seniority;
+}>;
+
+
+export type DepartmentAddUserMutation = { __typename?: 'Mutation', departmentAddUser?: { __typename?: 'Department', id: string, name: string } | null };
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
@@ -592,6 +629,20 @@ export type SetAvailabilityMutationVariables = Exact<{
 
 
 export type SetAvailabilityMutation = { __typename?: 'Mutation', setAvailability?: { __typename?: 'Availability', id: string, date: any, type: AvailabilityType } | null };
+
+export type StartSolvingMutationVariables = Exact<{
+  scheduleId: Scalars['String'];
+}>;
+
+
+export type StartSolvingMutation = { __typename?: 'Mutation', startSolving?: boolean | null };
+
+export type StopSolvingMutationVariables = Exact<{
+  scheduleId: Scalars['String'];
+}>;
+
+
+export type StopSolvingMutation = { __typename?: 'Mutation', stopSolving?: boolean | null };
 
 export type AvailabilitiesQueryVariables = Exact<{
   from: Scalars['Date'];
@@ -630,7 +681,7 @@ export type ScheduleQueryVariables = Exact<{
 }>;
 
 
-export type ScheduleQuery = { __typename?: 'Query', schedule?: { __typename?: 'Schedule', id: string, name: string, start: any, end: any, score?: string | null } | null };
+export type ScheduleQuery = { __typename?: 'Query', schedule?: { __typename?: 'Schedule', id: string, name: string, start: any, end: any, score?: string | null, status?: string | null } | null };
 
 export type SchedulesQueryVariables = Exact<{
   departmentId: Scalars['String'];
@@ -647,6 +698,66 @@ export type ShiftsQueryVariables = Exact<{
 export type ShiftsQuery = { __typename?: 'Query', shifts: Array<{ __typename?: 'Shift', id: string, requiredSeniority: Seniority, start: any, user?: { __typename?: 'User', name: string } | null }> };
 
 
+export const CreateDepartmentDocument = gql`
+    mutation createDepartment($organisationId: String!, $name: String!) {
+  createDepartment(organisationId: $organisationId, name: $name) {
+    id
+    name
+  }
+}
+    `;
+
+export function useCreateDepartmentMutation() {
+  return Urql.useMutation<CreateDepartmentMutation, CreateDepartmentMutationVariables>(CreateDepartmentDocument);
+};
+export const CreateOrganisationDocument = gql`
+    mutation createOrganisation($input: OrganisationInput!) {
+  createOrganisation(input: $input) {
+    id
+    name
+  }
+}
+    `;
+
+export function useCreateOrganisationMutation() {
+  return Urql.useMutation<CreateOrganisationMutation, CreateOrganisationMutationVariables>(CreateOrganisationDocument);
+};
+export const CreateScheduleDocument = gql`
+    mutation createSchedule($departmentId: String!, $name: String!, $start: Date!, $end: Date!) {
+  createSchedule(
+    departmentId: $departmentId
+    name: $name
+    start: $start
+    end: $end
+  ) {
+    id
+    name
+    start
+    end
+  }
+}
+    `;
+
+export function useCreateScheduleMutation() {
+  return Urql.useMutation<CreateScheduleMutation, CreateScheduleMutationVariables>(CreateScheduleDocument);
+};
+export const DepartmentAddUserDocument = gql`
+    mutation departmentAddUser($departmentId: String!, $name: String!, $email: String!, $seniority: Seniority!) {
+  departmentAddUser(
+    departmentId: $departmentId
+    name: $name
+    email: $email
+    seniority: $seniority
+  ) {
+    id
+    name
+  }
+}
+    `;
+
+export function useDepartmentAddUserMutation() {
+  return Urql.useMutation<DepartmentAddUserMutation, DepartmentAddUserMutationVariables>(DepartmentAddUserDocument);
+};
 export const LoginDocument = gql`
     mutation login($input: LoginInput!) {
   login(input: $input) {
@@ -691,6 +802,24 @@ export const SetAvailabilityDocument = gql`
 
 export function useSetAvailabilityMutation() {
   return Urql.useMutation<SetAvailabilityMutation, SetAvailabilityMutationVariables>(SetAvailabilityDocument);
+};
+export const StartSolvingDocument = gql`
+    mutation startSolving($scheduleId: String!) {
+  startSolving(scheduleId: $scheduleId)
+}
+    `;
+
+export function useStartSolvingMutation() {
+  return Urql.useMutation<StartSolvingMutation, StartSolvingMutationVariables>(StartSolvingDocument);
+};
+export const StopSolvingDocument = gql`
+    mutation stopSolving($scheduleId: String!) {
+  stopSolving(scheduleId: $scheduleId)
+}
+    `;
+
+export function useStopSolvingMutation() {
+  return Urql.useMutation<StopSolvingMutation, StopSolvingMutationVariables>(StopSolvingDocument);
 };
 export const AvailabilitiesDocument = gql`
     query availabilities($from: Date!, $to: Date!) {
@@ -776,6 +905,7 @@ export const ScheduleDocument = gql`
     start
     end
     score
+    status
   }
 }
     `;
