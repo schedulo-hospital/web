@@ -1,0 +1,12 @@
+query departmentUsers ($id: String!) {
+  departmentUsers (id: $id) {
+    edges {
+      node {
+        id
+        name
+        email
+        seniority
+      }
+    }
+  }
+}

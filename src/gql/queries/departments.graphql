@@ -1,0 +1,10 @@
+query departments ($orgId: String!) {
+  departments(organisationId: $orgId) {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+query schedule ($id: String!) {
+  schedule (id: $id) {
+    id
+    name
+    start
+    end
+    score
+  }
+}

@@ -318,6 +318,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createDepartment?: Maybe<Department>;
   createOrganisation?: Maybe<Organisation>;
+  createSchedule?: Maybe<Schedule>;
   departmentAddUser?: Maybe<Department>;
   login?: Maybe<LoginResponse>;
   organisationAddUser?: Maybe<Organisation>;
@@ -339,9 +340,18 @@ export type MutationCreateOrganisationArgs = {
 };
 
 
+export type MutationCreateScheduleArgs = {
+  departmentId: Scalars['String'];
+  end: Scalars['Date'];
+  name: Scalars['String'];
+  start: Scalars['Date'];
+};
+
+
 export type MutationDepartmentAddUserArgs = {
   departmentId: Scalars['String'];
   email: Scalars['String'];
+  seniority: Seniority;
 };
 
 
@@ -423,10 +433,13 @@ export type Query = {
   availabilities: Array<Availability>;
   currentUser?: Maybe<User>;
   department?: Maybe<Department>;
+  departmentUsers?: Maybe<UserConnection>;
   departments?: Maybe<DepartmentConnection>;
   organisation?: Maybe<Organisation>;
   organisations?: Maybe<OrganisationConnection>;
   schedule?: Maybe<Schedule>;
+  schedules?: Maybe<ScheduleConnection>;
+  shifts: Array<Shift>;
 };
 
 
@@ -437,6 +450,11 @@ export type QueryAvailabilitiesArgs = {
 
 
 export type QueryDepartmentArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryDepartmentUsersArgs = {
   id: Scalars['String'];
 };
 
@@ -465,6 +483,16 @@ export type QueryScheduleArgs = {
   id: Scalars['String'];
 };
 
+
+export type QuerySchedulesArgs = {
+  departmentId: Scalars['String'];
+};
+
+
+export type QueryShiftsArgs = {
+  scheduleId: Scalars['String'];
+};
+
 export type RegisterInput = {
   email: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
@@ -473,7 +501,44 @@ export type RegisterInput = {
 
 export type Schedule = {
   __typename?: 'Schedule';
+  end: Scalars['Date'];
   id: Scalars['String'];
+  name: Scalars['String'];
+  score?: Maybe<Scalars['String']>;
+  start: Scalars['Date'];
+};
+
+/** Schedule Connection */
+export type ScheduleConnection = {
+  __typename?: 'ScheduleConnection';
+  /** Field edges */
+  edges?: Maybe<Array<Maybe<ScheduleEdge>>>;
+  /** Field pageInfo */
+  pageInfo?: Maybe<PageInfo>;
+};
+
+/** Schedule Edge */
+export type ScheduleEdge = {
+  __typename?: 'ScheduleEdge';
+  /** Field cursor */
+  cursor?: Maybe<Scalars['String']>;
+  /** Field node */
+  node?: Maybe<Schedule>;
+};
+
+export enum Seniority {
+  Junior = 'JUNIOR',
+  Middle = 'MIDDLE',
+  Senior = 'SENIOR'
+}
+
+export type Shift = {
+  __typename?: 'Shift';
+  end: Scalars['Date'];
+  id: Scalars['String'];
+  requiredSeniority: Seniority;
+  start: Scalars['Date'];
+  user?: Maybe<User>;
 };
 
 export type User = {
@@ -540,6 +605,46 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, name: string, email: string } | null };
+
+export type DepartmentUsersQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DepartmentUsersQuery = { __typename?: 'Query', departmentUsers?: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, seniority?: string | null } | null } | null> | null } | null };
+
+export type DepartmentsQueryVariables = Exact<{
+  orgId: Scalars['String'];
+}>;
+
+
+export type DepartmentsQuery = { __typename?: 'Query', departments?: { __typename?: 'DepartmentConnection', edges?: Array<{ __typename?: 'DepartmentEdge', node?: { __typename?: 'Department', id: string, name: string } | null } | null> | null } | null };
+
+export type OrganisationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrganisationsQuery = { __typename?: 'Query', organisations?: { __typename?: 'OrganisationConnection', edges?: Array<{ __typename?: 'OrganisationEdge', node?: { __typename?: 'Organisation', id: string, name: string } | null } | null> | null } | null };
+
+export type ScheduleQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ScheduleQuery = { __typename?: 'Query', schedule?: { __typename?: 'Schedule', id: string, name: string, start: any, end: any, score?: string | null } | null };
+
+export type SchedulesQueryVariables = Exact<{
+  departmentId: Scalars['String'];
+}>;
+
+
+export type SchedulesQuery = { __typename?: 'Query', schedules?: { __typename?: 'ScheduleConnection', edges?: Array<{ __typename?: 'ScheduleEdge', node?: { __typename?: 'Schedule', id: string, name: string, start: any, end: any, score?: string | null } | null } | null> | null } | null };
+
+export type ShiftsQueryVariables = Exact<{
+  scheduleId: Scalars['String'];
+}>;
+
+
+export type ShiftsQuery = { __typename?: 'Query', shifts: Array<{ __typename?: 'Shift', id: string, requiredSeniority: Seniority, start: any, user?: { __typename?: 'User', name: string } | null }> };
 
 
 export const LoginDocument = gql`
@@ -612,4 +717,104 @@ export const CurrentUserDocument = gql`
 
 export function useCurrentUserQuery(options?: Omit<Urql.UseQueryArgs<CurrentUserQueryVariables>, 'query'>) {
   return Urql.useQuery<CurrentUserQuery, CurrentUserQueryVariables>({ query: CurrentUserDocument, ...options });
+};
+export const DepartmentUsersDocument = gql`
+    query departmentUsers($id: String!) {
+  departmentUsers(id: $id) {
+    edges {
+      node {
+        id
+        name
+        email
+        seniority
+      }
+    }
+  }
+}
+    `;
+
+export function useDepartmentUsersQuery(options: Omit<Urql.UseQueryArgs<DepartmentUsersQueryVariables>, 'query'>) {
+  return Urql.useQuery<DepartmentUsersQuery, DepartmentUsersQueryVariables>({ query: DepartmentUsersDocument, ...options });
+};
+export const DepartmentsDocument = gql`
+    query departments($orgId: String!) {
+  departments(organisationId: $orgId) {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+export function useDepartmentsQuery(options: Omit<Urql.UseQueryArgs<DepartmentsQueryVariables>, 'query'>) {
+  return Urql.useQuery<DepartmentsQuery, DepartmentsQueryVariables>({ query: DepartmentsDocument, ...options });
+};
+export const OrganisationsDocument = gql`
+    query organisations {
+  organisations {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+export function useOrganisationsQuery(options?: Omit<Urql.UseQueryArgs<OrganisationsQueryVariables>, 'query'>) {
+  return Urql.useQuery<OrganisationsQuery, OrganisationsQueryVariables>({ query: OrganisationsDocument, ...options });
+};
+export const ScheduleDocument = gql`
+    query schedule($id: String!) {
+  schedule(id: $id) {
+    id
+    name
+    start
+    end
+    score
+  }
+}
+    `;
+
+export function useScheduleQuery(options: Omit<Urql.UseQueryArgs<ScheduleQueryVariables>, 'query'>) {
+  return Urql.useQuery<ScheduleQuery, ScheduleQueryVariables>({ query: ScheduleDocument, ...options });
+};
+export const SchedulesDocument = gql`
+    query schedules($departmentId: String!) {
+  schedules(departmentId: $departmentId) {
+    edges {
+      node {
+        id
+        name
+        start
+        end
+        score
+      }
+    }
+  }
+}
+    `;
+
+export function useSchedulesQuery(options: Omit<Urql.UseQueryArgs<SchedulesQueryVariables>, 'query'>) {
+  return Urql.useQuery<SchedulesQuery, SchedulesQueryVariables>({ query: SchedulesDocument, ...options });
+};
+export const ShiftsDocument = gql`
+    query shifts($scheduleId: String!) {
+  shifts(scheduleId: $scheduleId) {
+    id
+    requiredSeniority
+    start
+    user {
+      name
+    }
+  }
+}
+    `;
+
+export function useShiftsQuery(options: Omit<Urql.UseQueryArgs<ShiftsQueryVariables>, 'query'>) {
+  return Urql.useQuery<ShiftsQuery, ShiftsQueryVariables>({ query: ShiftsDocument, ...options });
 };

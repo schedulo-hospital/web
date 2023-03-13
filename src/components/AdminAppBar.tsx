@@ -40,7 +40,6 @@ const AdminAppBar = () => {
 
             <Link href="/"><Button sx={{ my: 2, color: 'white', display: 'block' }}>Přehled</Button></Link>
             <Link href="/organisations"><Button sx={{ my: 2, color: 'white', display: 'block' }}>Organizace</Button></Link>
-            <Link href="/availability"><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dostupnost</Button></Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

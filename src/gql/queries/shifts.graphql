@@ -1,0 +1,10 @@
+query shifts ($scheduleId: String!) {
+  shifts (scheduleId: $scheduleId) {
+    id
+    requiredSeniority
+    start
+    user {
+      name
+    }
+  }
+}

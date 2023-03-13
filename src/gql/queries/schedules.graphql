@@ -1,0 +1,13 @@
+query schedules ($departmentId: String!) {
+  schedules (departmentId: $departmentId) {
+    edges {
+      node {
+        id
+        name
+        start
+        end
+        score
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+query organisations {
+  organisations {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
