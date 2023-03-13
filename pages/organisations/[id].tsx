@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 
 const Organisation: NextPage = () => {
   const { query: { id: orgId } } = useRouter()
-  const [{data}] = useDepartmentsQuery({ variables: { orgId } })
+  const [{data}] = useDepartmentsQuery({ variables: { orgId: orgId as string } })
   
   const departments = data?.departments?.edges
   return (

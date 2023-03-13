@@ -15,8 +15,8 @@ const localizer = momentLocalizer(moment)
 
 const Schedule: NextPage = () => {
   const { query: { scheduleId } } = useRouter()
-  const [{data}] = useScheduleQuery({ variables: { id: scheduleId } })
-  const [{data: scheduleData}] = useShiftsQuery({ variables: { scheduleId } })
+  const [{data}] = useScheduleQuery({ variables: { id: scheduleId as string } })
+  const [{data: scheduleData}] = useShiftsQuery({ variables: { scheduleId: scheduleId as string } })
 
   const schedule = data?.schedule
   const shifts = scheduleData?.shifts?.map(shift => ({

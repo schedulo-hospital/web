@@ -6,7 +6,7 @@ import { useDepartmentUsersQuery } from "../../../src/gql/generatedTypes"
 
 const Users: NextPage = () => {
   const { query: { id: departmentId } } = useRouter()
-  const [{data}] = useDepartmentUsersQuery({ variables: { id: departmentId } })
+  const [{data}] = useDepartmentUsersQuery({ variables: { id: departmentId as string } })
   
   const departments = data?.departmentUsers?.edges
   return (

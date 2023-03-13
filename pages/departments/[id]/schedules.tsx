@@ -6,7 +6,7 @@ import { useSchedulesQuery } from "../../../src/gql/generatedTypes"
 
 const Users: NextPage = () => {
   const { query: { id: departmentId } } = useRouter()
-  const [{data}] = useSchedulesQuery({ variables: { departmentId } })
+  const [{data}] = useSchedulesQuery({ variables: { departmentId: departmentId as string } })
   
   const schedules = data?.schedules?.edges
   return (
