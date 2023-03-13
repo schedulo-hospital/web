@@ -2,9 +2,9 @@ import * as React from "react"
 import { Button, TextField, Typography } from "@mui/material"
 import { NextPage } from "next"
 import { withAdminLayout } from "../../src/hoc/withAdmin"
-import { useOrganisationsQuery, useCreateOrganisationMutation } from '../../src/gql/generatedTypes';
+import { useOrganisationsQuery, useCreateOrganisationMutation } from '../../src/gql/generatedTypes'
 import FormDialog from "../../src/components/FormDialog"
-import Link from "next/link";
+import Link from "next/link"
 
 const Organisations: NextPage = () => {
   const [addOrgOpen, setAddOrgOpen] = React.useState(false)

@@ -2,7 +2,7 @@ import { Button, TableCell, TableRow, TextField, Typography } from "@mui/materia
 import { NextPage } from "next"
 import { withAdminLayout } from "../../../src/hoc/withAdmin"
 import { useRouter } from "next/router"
-import { useSchedulesQuery, useCreateScheduleMutation } from '../../../src/gql/generatedTypes';
+import { useSchedulesQuery, useCreateScheduleMutation } from '../../../src/gql/generatedTypes'
 import DepartmentMenu from "../../../src/components/DepartmentMenu"
 import Link from "next/link"
 import AppTable from "../../../src/components/Table"
